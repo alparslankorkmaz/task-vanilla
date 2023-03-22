@@ -1,7 +1,3 @@
-<?php
-require 'connect.php'
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -10,6 +6,8 @@ require 'connect.php'
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="main.css" />
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/add-to-calendar-button@2" async defer></script>
   <title>Register</title>
 </head>
 
@@ -82,10 +80,11 @@ require 'connect.php'
         </div>
         <div class="col-md-5 col-sm-12 bg-white rounded-3 p-0 m-0 pb-4">
           <div class="p-5 bg-secondary bg-opacity-10">
-            <p class="h2 fw-semibold rounded-3">Register here</p>
+            <p class="h2 fw-semibold rounded-3 d-flex justify-content-between align-items-center">Register here <add-to-calendar-button name="Stack Overflow Happy Hour" startDate="2023-03-30" startTime="17:00" endDate="2023-03-30" endTime="19:00" timeZone="Europe/Brussels" location="https://stackoverflow.zoom.us/j/87327075536?pwd=cDIzTmtYM09MNDc1c2VVYkdHUWtsUT09" options="'Apple','Google','iCal','Outlook.com','Yahoo'" lightMode="dark"></add-to-calendar-button>
+            </p>
           </div>
           <div class="container">
-            <form action="<?= $_SERVER['PHP_SELF']; ?>" method="POST" class="row g-4 m-4 needs-validation" novalidate>
+            <form action="connect.php" method="POST" id="form" class="row g-4 m-4 needs-validation" novalidate>
               <div class="col-md-6">
                 <label for="firstname" class="form-label">First Name</label>
                 <input type="text" class="form-control" name="firstname" required />
@@ -111,7 +110,7 @@ require 'connect.php'
                 <input type="text" class="form-control" name="postcode" required />
               </div>
               <div class="d-grid gap-2">
-                <button type="submit" name="submit" class="text-light fw-semibold btn btn-warning mt-3 p-2">
+                <button type="submit" name="submit" id="submit" class="text-light fw-semibold btn btn-warning mt-3 p-2">
                   Register
                 </button>
               </div>
@@ -123,6 +122,24 @@ require 'connect.php'
   </div>
 
   <script src="app.js"></script>
+  <script>
+    $("#submit").click(function() {
+
+      $.post($("#form").attr("action"),
+        $("#form :input").serializeArray(),
+        function(info) {
+
+          $("#response").empty();
+          $("#response").html(info);
+
+        });
+
+      $("#form").submit(function() {
+        return false;
+      });
+    });
+  </script>
+
 </body>
 
 </html>
